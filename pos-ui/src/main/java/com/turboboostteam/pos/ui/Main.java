@@ -1,31 +1,23 @@
 package com.turboboostteam.pos.ui;
 
 import com.formdev.flatlaf.FlatDarkLaf;
+import com.turboboostteam.pos.config.AppContext;
 
 import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
+
+        // 1. Boot Spring Context + DB + Flyway
+        AppContext.init();
+        System.out.println("✅ DB connected & schema ready");
+
+        // 2. Launch Swing UI
         FlatDarkLaf.setup();
-        SwingUtilities.invokeLater(()->{
+        SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Lucky POS");
-            JMenuBar manuBar = new JMenuBar();
-
-            JMenu homeMenu = new JMenu("Home");
-            JMenu theme = new JMenu("Theme");
-
-            JMenuItem theme1 = new JMenuItem("cobolt");
-            JMenuItem theme2 = new JMenuItem("dracula");
-
-            theme.add(theme1);
-            theme.add(theme2);
-
-            manuBar.add(homeMenu);
-            manuBar.add(theme);
-
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(1024,768);
-            frame.setJMenuBar(manuBar);
+            frame.setSize(1024, 768);
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
         });
