@@ -4,6 +4,8 @@
 package com.turboboostteam.pos.jooq;
 
 
+import com.turboboostteam.pos.jooq.tables.Categories;
+import com.turboboostteam.pos.jooq.tables.Products;
 import com.turboboostteam.pos.jooq.tables.Users;
 
 
@@ -12,6 +14,16 @@ import com.turboboostteam.pos.jooq.tables.Users;
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes", "this-escape" })
 public class Tables {
+
+    /**
+     * The table <code>PUBLIC.CATEGORIES</code>.
+     */
+    public static final Categories CATEGORIES = Categories.CATEGORIES;
+
+    /**
+     * The table <code>PUBLIC.PRODUCTS</code>.
+     */
+    public static final Products PRODUCTS = Products.PRODUCTS;
 
     /**
      * The table <code>PUBLIC.USERS</code>.

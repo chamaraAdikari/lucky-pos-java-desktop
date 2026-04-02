@@ -12,5 +12,13 @@
     <artifactId>pos-model</artifactId>
     <packaging>jar</packaging>
 
-
+    <dependencies>
+        <!-- Moneta - Money and Currency API -->
+        <dependency>
+            <groupId>org.javamoney</groupId>
+            <artifactId>moneta</artifactId>
+            <version>1.4.4</version>
+            <type>pom</type>
+        </dependency>
+    </dependencies>
 </project>

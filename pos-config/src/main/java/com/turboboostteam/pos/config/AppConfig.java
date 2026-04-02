@@ -1,7 +1,12 @@
 package com.turboboostteam.pos.config;
 
+import com.turboboostteam.pos.dao.CategoryDao;
+import com.turboboostteam.pos.dao.ProductDao;
 import com.turboboostteam.pos.dao.UserDao;
+import com.turboboostteam.pos.dao.impl.CategoryDaoImpl;
+import com.turboboostteam.pos.dao.impl.ProductDaoImpl;
 import com.turboboostteam.pos.dao.impl.UserDaoImpl;
+import com.turboboostteam.pos.service.ProductService;
 import com.turboboostteam.pos.service.UserService;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
@@ -29,4 +34,20 @@ public class AppConfig {
     public UserService userService(UserDao userDao) {
         return new UserService(userDao);
     }
+
+    @Bean
+    public CategoryDao categoryDao(DSLContext dsl) {
+        return new CategoryDaoImpl(dsl);
+    }
+
+    @Bean
+    public ProductDao productDao(DSLContext dsl) {
+        return new ProductDaoImpl(dsl);
+    }
+
+    @Bean
+    public ProductService productService(ProductDao productDao) {
+        return new ProductService(productDao);
+    }
+
 }

@@ -4,9 +4,14 @@
 package com.turboboostteam.pos.jooq;
 
 
+import com.turboboostteam.pos.jooq.tables.Categories;
+import com.turboboostteam.pos.jooq.tables.Products;
 import com.turboboostteam.pos.jooq.tables.Users;
+import com.turboboostteam.pos.jooq.tables.records.CategoriesRecord;
+import com.turboboostteam.pos.jooq.tables.records.ProductsRecord;
 import com.turboboostteam.pos.jooq.tables.records.UsersRecord;
 
+import org.jooq.ForeignKey;
 import org.jooq.TableField;
 import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
@@ -24,6 +29,16 @@ public class Keys {
     // UNIQUE and PRIMARY KEY definitions
     // -------------------------------------------------------------------------
 
+    public static final UniqueKey<CategoriesRecord> CONSTRAINT_6 = Internal.createUniqueKey(Categories.CATEGORIES, DSL.name("CONSTRAINT_6"), new TableField[] { Categories.CATEGORIES.ID }, true);
+    public static final UniqueKey<CategoriesRecord> CONSTRAINT_6A = Internal.createUniqueKey(Categories.CATEGORIES, DSL.name("CONSTRAINT_6A"), new TableField[] { Categories.CATEGORIES.NAME }, true);
+    public static final UniqueKey<ProductsRecord> CONSTRAINT_F = Internal.createUniqueKey(Products.PRODUCTS, DSL.name("CONSTRAINT_F"), new TableField[] { Products.PRODUCTS.ID }, true);
+    public static final UniqueKey<ProductsRecord> CONSTRAINT_F2 = Internal.createUniqueKey(Products.PRODUCTS, DSL.name("CONSTRAINT_F2"), new TableField[] { Products.PRODUCTS.BARCODE }, true);
     public static final UniqueKey<UsersRecord> CONSTRAINT_4 = Internal.createUniqueKey(Users.USERS, DSL.name("CONSTRAINT_4"), new TableField[] { Users.USERS.ID }, true);
     public static final UniqueKey<UsersRecord> CONSTRAINT_4D = Internal.createUniqueKey(Users.USERS, DSL.name("CONSTRAINT_4D"), new TableField[] { Users.USERS.USERNAME }, true);
+
+    // -------------------------------------------------------------------------
+    // FOREIGN KEY definitions
+    // -------------------------------------------------------------------------
+
+    public static final ForeignKey<ProductsRecord, CategoriesRecord> CONSTRAINT_F2D = Internal.createForeignKey(Products.PRODUCTS, DSL.name("CONSTRAINT_F2D"), new TableField[] { Products.PRODUCTS.CATEGORY_ID }, Keys.CONSTRAINT_6, new TableField[] { Categories.CATEGORIES.ID }, true);
 }

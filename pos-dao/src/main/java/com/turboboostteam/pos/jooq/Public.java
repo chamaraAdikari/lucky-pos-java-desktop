@@ -4,6 +4,8 @@
 package com.turboboostteam.pos.jooq;
 
 
+import com.turboboostteam.pos.jooq.tables.Categories;
+import com.turboboostteam.pos.jooq.tables.Products;
 import com.turboboostteam.pos.jooq.tables.Users;
 
 import java.util.Arrays;
@@ -28,6 +30,16 @@ public class Public extends SchemaImpl {
     public static final Public PUBLIC = new Public();
 
     /**
+     * The table <code>PUBLIC.CATEGORIES</code>.
+     */
+    public final Categories CATEGORIES = Categories.CATEGORIES;
+
+    /**
+     * The table <code>PUBLIC.PRODUCTS</code>.
+     */
+    public final Products PRODUCTS = Products.PRODUCTS;
+
+    /**
      * The table <code>PUBLIC.USERS</code>.
      */
     public final Users USERS = Users.USERS;
@@ -48,6 +60,8 @@ public class Public extends SchemaImpl {
     @Override
     public final List<Table<?>> getTables() {
         return Arrays.asList(
+            Categories.CATEGORIES,
+            Products.PRODUCTS,
             Users.USERS
         );
     }
