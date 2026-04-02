@@ -2,7 +2,7 @@ package com.turboboostteam.pos.ui;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.turboboostteam.pos.config.AppContext;
-
+import com.turboboostteam.pos.ui.panels.LoginPanel;
 import javax.swing.*;
 
 public class Main {
@@ -19,6 +19,7 @@ public class Main {
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setSize(1024, 768);
             frame.setLocationRelativeTo(null);
+            frame.setContentPane(new LoginPanel());  // ← Login screen
             frame.setVisible(true);
         });
     }
