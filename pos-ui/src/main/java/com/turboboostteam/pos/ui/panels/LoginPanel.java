@@ -2,6 +2,7 @@ package com.turboboostteam.pos.ui.panels;
 
 import com.turboboostteam.pos.config.AppContext;
 import com.turboboostteam.pos.service.UserService;
+import com.turboboostteam.pos.ui.MainFrame;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -86,11 +87,12 @@ public class LoginPanel extends JPanel {
 
         if (success) {
             errorLabel.setText(" ");
-            // TODO Day 4 — switch to MainFrame
-            JOptionPane.showMessageDialog(this,
-                    "Welcome! Login successful.",
-                    "Success",
-                    JOptionPane.INFORMATION_MESSAGE);
+            // Switch to MainFrame
+            SwingUtilities.getWindowAncestor(this).dispose();
+            SwingUtilities.invokeLater(() -> {
+                MainFrame mainFrame = new MainFrame();
+                mainFrame.setVisible(true);
+            });
         } else {
             errorLabel.setText("Invalid username or PIN");
             pinField.setText("");
