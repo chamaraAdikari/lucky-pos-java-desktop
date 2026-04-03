@@ -5,7 +5,9 @@ package com.turboboostteam.pos.jooq;
 
 
 import com.turboboostteam.pos.jooq.tables.Categories;
+import com.turboboostteam.pos.jooq.tables.InventoryStock;
 import com.turboboostteam.pos.jooq.tables.Products;
+import com.turboboostteam.pos.jooq.tables.StockMovements;
 import com.turboboostteam.pos.jooq.tables.Users;
 
 import java.util.Arrays;
@@ -35,9 +37,19 @@ public class Public extends SchemaImpl {
     public final Categories CATEGORIES = Categories.CATEGORIES;
 
     /**
+     * The table <code>PUBLIC.INVENTORY_STOCK</code>.
+     */
+    public final InventoryStock INVENTORY_STOCK = InventoryStock.INVENTORY_STOCK;
+
+    /**
      * The table <code>PUBLIC.PRODUCTS</code>.
      */
     public final Products PRODUCTS = Products.PRODUCTS;
+
+    /**
+     * The table <code>PUBLIC.STOCK_MOVEMENTS</code>.
+     */
+    public final StockMovements STOCK_MOVEMENTS = StockMovements.STOCK_MOVEMENTS;
 
     /**
      * The table <code>PUBLIC.USERS</code>.
@@ -61,7 +73,9 @@ public class Public extends SchemaImpl {
     public final List<Table<?>> getTables() {
         return Arrays.asList(
             Categories.CATEGORIES,
+            InventoryStock.INVENTORY_STOCK,
             Products.PRODUCTS,
+            StockMovements.STOCK_MOVEMENTS,
             Users.USERS
         );
     }

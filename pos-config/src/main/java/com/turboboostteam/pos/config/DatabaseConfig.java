@@ -29,6 +29,7 @@ public class DatabaseConfig {
                 .dataSource(dataSource)
                 .locations("classpath:db/migration")
                 .load();
+        flyway.repair();
         flyway.migrate();  // runs all V1__, V2__ scripts automatically
         return flyway;
     }

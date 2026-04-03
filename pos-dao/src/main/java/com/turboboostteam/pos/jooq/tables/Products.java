@@ -7,6 +7,8 @@ package com.turboboostteam.pos.jooq.tables;
 import com.turboboostteam.pos.jooq.Keys;
 import com.turboboostteam.pos.jooq.Public;
 import com.turboboostteam.pos.jooq.tables.Categories.CategoriesPath;
+import com.turboboostteam.pos.jooq.tables.InventoryStock.InventoryStockPath;
+import com.turboboostteam.pos.jooq.tables.StockMovements.StockMovementsPath;
 import com.turboboostteam.pos.jooq.tables.records.ProductsRecord;
 
 import java.math.BigDecimal;
@@ -201,6 +203,32 @@ public class Products extends TableImpl<ProductsRecord> {
             _categories = new CategoriesPath(this, Keys.CONSTRAINT_F2D, null);
 
         return _categories;
+    }
+
+    private transient InventoryStockPath _inventoryStock;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>PUBLIC.INVENTORY_STOCK</code> table
+     */
+    public InventoryStockPath inventoryStock() {
+        if (_inventoryStock == null)
+            _inventoryStock = new InventoryStockPath(this, null, Keys.CONSTRAINT_3B.getInverseKey());
+
+        return _inventoryStock;
+    }
+
+    private transient StockMovementsPath _stockMovements;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>PUBLIC.STOCK_MOVEMENTS</code> table
+     */
+    public StockMovementsPath stockMovements() {
+        if (_stockMovements == null)
+            _stockMovements = new StockMovementsPath(this, null, Keys.CONSTRAINT_99.getInverseKey());
+
+        return _stockMovements;
     }
 
     @Override

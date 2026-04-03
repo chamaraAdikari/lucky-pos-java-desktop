@@ -1,11 +1,14 @@
 package com.turboboostteam.pos.config;
 
 import com.turboboostteam.pos.dao.CategoryDao;
+import com.turboboostteam.pos.dao.InventoryDao;
 import com.turboboostteam.pos.dao.ProductDao;
 import com.turboboostteam.pos.dao.UserDao;
 import com.turboboostteam.pos.dao.impl.CategoryDaoImpl;
+import com.turboboostteam.pos.dao.impl.InventoryDaoImpl;
 import com.turboboostteam.pos.dao.impl.ProductDaoImpl;
 import com.turboboostteam.pos.dao.impl.UserDaoImpl;
+import com.turboboostteam.pos.service.InventoryService;
 import com.turboboostteam.pos.service.ProductService;
 import com.turboboostteam.pos.service.UserService;
 import org.jooq.DSLContext;
@@ -50,5 +53,14 @@ public class AppConfig {
         return new ProductService(productDao);
     }
 
+    @Bean
+    public InventoryDao inventoryDao(DSLContext dsl) {
+        return new InventoryDaoImpl(dsl);
+    }
+
+    @Bean
+    public InventoryService inventoryService(InventoryDao inventoryDao) {
+        return new InventoryService(inventoryDao);
+    }
 
 }
