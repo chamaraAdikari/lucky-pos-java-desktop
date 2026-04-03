@@ -2,6 +2,7 @@ package com.turboboostteam.pos.ui.panels;
 
 import com.turboboostteam.pos.config.AppContext;
 import com.turboboostteam.pos.model.product.Product;
+import com.turboboostteam.pos.model.sale.ReceiptData;
 import com.turboboostteam.pos.model.sale.SaleItem;
 import com.turboboostteam.pos.model.sale.SaleTransaction;
 import com.turboboostteam.pos.service.ProductService;
@@ -336,30 +337,40 @@ public class SalesPanel extends JPanel {
                         saleService.commitSale(
                                 paymentType, total);
 
-                // Show success with change if cash
-                String successMsg =
-                        "✅ Sale Complete!\n"
-                                + "Sale #: " + completed.getSaleNumber()
-                                + "\nTotal: " + completed.getTotalAmount()
-                                + "\nRef: " + paymentResult.getReference();
+                // Build receipt data
+                ReceiptData receiptData = new ReceiptData(
+                        completed.getSaleNumber(),
+                        SessionManager.getInstance()
+                                .getCurrentUser().getUsername(),
+                        completed.getCompletedAt() != null
+                                ? completed.getCompletedAt()
+                                : java.time.LocalDateTime.now(),
+                        completed.getItems(),
+                        completed.getSubtotal(),
+                        completed.getTaxAmount(),
+                        completed.getDiscountAmount(),
+                        completed.getTotalAmount(),
+                        paymentResult.getChangeAmount() != null
+                                ? total.add(paymentResult
+                                            .getChangeAmount())
+                                : total,
+                        paymentResult.getChangeAmount(),
+                        type,
+                        paymentResult.getReference()
+                );
 
-                if (type.equals("CASH")
-                        && paymentResult.getChangeAmount() != null) {
-                    successMsg += "\nChange: "
-                            + paymentResult.getChangeAmount();
-                }
-
-                JOptionPane.showMessageDialog(this,
-                        successMsg,
-                        "Payment Successful ✅",
-                        JOptionPane.INFORMATION_MESSAGE);
+                // Show receipt dialog
+                ReceiptDialog receiptDialog =
+                        new ReceiptDialog(parent, receiptData);
+                receiptDialog.setVisible(true);
 
                 startNewSale();
 
             } catch (Exception e) {
                 setStatus("❌ Error: " + e.getMessage());
             }
-        } else {
+        }
+         else {
             setStatus("❌ Payment failed: "
                     + paymentResult.getMessage());
         }
