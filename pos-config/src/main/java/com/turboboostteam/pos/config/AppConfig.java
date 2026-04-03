@@ -2,10 +2,7 @@ package com.turboboostteam.pos.config;
 
 import com.turboboostteam.pos.dao.*;
 import com.turboboostteam.pos.dao.impl.*;
-import com.turboboostteam.pos.service.InventoryService;
-import com.turboboostteam.pos.service.ProductService;
-import com.turboboostteam.pos.service.SaleService;
-import com.turboboostteam.pos.service.UserService;
+import com.turboboostteam.pos.service.*;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
@@ -64,8 +61,19 @@ public class AppConfig {
     }
 
     @Bean
-    public SaleService saleService(SaleDao saleDao,
-                                   InventoryService inventoryService) {
-        return new SaleService(saleDao, inventoryService);
+    public TaxService taxService() {
+        return new TaxService();
     }
+
+    @Bean
+    public SaleService saleService(SaleDao saleDao,
+                                   InventoryService inventoryService,
+                                   TaxService taxService,
+                                   ProductService productService) {
+        return new SaleService(saleDao, inventoryService,
+                taxService, productService);
+    }
+
+
+
 }

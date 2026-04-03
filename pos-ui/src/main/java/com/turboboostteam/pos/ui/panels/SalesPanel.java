@@ -7,10 +7,12 @@ import com.turboboostteam.pos.model.sale.SaleTransaction;
 import com.turboboostteam.pos.service.ProductService;
 import com.turboboostteam.pos.service.SaleService;
 import com.turboboostteam.pos.service.SessionManager;
+import com.turboboostteam.pos.service.payment.PaymentResult;
 import com.turboboostteam.pos.ui.components.CartTableModel;
 import com.turboboostteam.pos.ui.components.NumpadPanel;
 import net.miginfocom.swing.MigLayout;
 
+import javax.money.MonetaryAmount;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
@@ -301,39 +303,65 @@ public class SalesPanel extends JPanel {
             return;
         }
 
-        String msg = type.equals("CASH")
-                ? "Total: " + currentSale.getTotalAmount()
-                  + "\n\nConfirm cash payment?"
-                : "Total: " + currentSale.getTotalAmount()
-                  + "\n\nConfirm card payment?";
+        Frame parent = (Frame) SwingUtilities
+                .getWindowAncestor(this);
+        MonetaryAmount total = currentSale.getTotalAmount();
+        PaymentResult paymentResult;
 
-        int confirm = JOptionPane.showConfirmDialog(this,
-                msg, "Confirm Payment",
-                JOptionPane.YES_NO_OPTION);
+        if (type.equals("CASH")) {
+            // Show cash payment dialog
+            CashPaymentDialog dialog =
+                    new CashPaymentDialog(parent, total);
+            dialog.setVisible(true);
+            paymentResult = dialog.getResult();
 
-        if (confirm != JOptionPane.YES_OPTION) return;
+        } else {
+            // Show card payment dialog
+            CardPaymentDialog dialog =
+                    new CardPaymentDialog(parent, total);
+            dialog.setVisible(true);
+            paymentResult = dialog.getResult();
+        }
 
-        try {
-            com.turboboostteam.pos.model.enums.PaymentType
-                    paymentType = com.turboboostteam.pos
-                    .model.enums.PaymentType.valueOf(type);
+        // User cancelled
+        if (paymentResult == null) return;
 
-            SaleTransaction completed = saleService.commitSale(
-                    paymentType,
-                    currentSale.getTotalAmount()
-            );
+        if (paymentResult.isSuccess()) {
+            try {
+                com.turboboostteam.pos.model.enums.PaymentType
+                        paymentType = com.turboboostteam.pos
+                        .model.enums.PaymentType.valueOf(type);
 
-            JOptionPane.showMessageDialog(this,
-                    "✅ Sale Complete!\n"
-                            + "Sale #: " + completed.getSaleNumber()
-                            + "\nTotal: " + completed.getTotalAmount(),
-                    "Payment Successful",
-                    JOptionPane.INFORMATION_MESSAGE);
+                SaleTransaction completed =
+                        saleService.commitSale(
+                                paymentType, total);
 
-            startNewSale(); // open next sale
+                // Show success with change if cash
+                String successMsg =
+                        "✅ Sale Complete!\n"
+                                + "Sale #: " + completed.getSaleNumber()
+                                + "\nTotal: " + completed.getTotalAmount()
+                                + "\nRef: " + paymentResult.getReference();
 
-        } catch (Exception e) {
-            setStatus("❌ Payment failed: " + e.getMessage());
+                if (type.equals("CASH")
+                        && paymentResult.getChangeAmount() != null) {
+                    successMsg += "\nChange: "
+                            + paymentResult.getChangeAmount();
+                }
+
+                JOptionPane.showMessageDialog(this,
+                        successMsg,
+                        "Payment Successful ✅",
+                        JOptionPane.INFORMATION_MESSAGE);
+
+                startNewSale();
+
+            } catch (Exception e) {
+                setStatus("❌ Error: " + e.getMessage());
+            }
+        } else {
+            setStatus("❌ Payment failed: "
+                    + paymentResult.getMessage());
         }
     }
 

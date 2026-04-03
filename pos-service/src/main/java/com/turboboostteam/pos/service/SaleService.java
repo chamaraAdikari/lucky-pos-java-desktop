@@ -10,14 +10,37 @@ public class SaleService {
 
     private final SaleDao saleDao;
     private final InventoryService inventoryService;
+    private final TaxService taxService;
+    private final ProductService productService;
 
-    // Current active sale — one at a time per cashier
     private SaleTransaction currentSale;
 
+    // Current active sale — one at a time per cashier
     public SaleService(SaleDao saleDao,
-                       InventoryService inventoryService) {
+                       InventoryService inventoryService,
+                       TaxService taxService,
+                       ProductService productService) {
         this.saleDao          = saleDao;
         this.inventoryService = inventoryService;
+        this.taxService       = taxService;
+        this.productService   = productService;
+    }
+
+    public void addItem(SaleItem item) {
+        validateActiveSale();
+
+        // Apply tax before adding to cart
+        String category = productService
+                .findById(item.getProductId())
+                .map(p -> p.getCategory() != null
+                        ? p.getCategory().getName()
+                        : "General")
+                .orElse("General");
+
+        MonetaryAmount tax = taxService.calculate(item, category);
+        item.setTaxAmount(tax);
+
+        currentSale.addItem(item);
     }
 
     // ---- Sale Lifecycle ----
@@ -31,10 +54,6 @@ public class SaleService {
         return currentSale;
     }
 
-    public void addItem(SaleItem item) {
-        validateActiveSale();
-        currentSale.addItem(item);
-    }
 
     public void removeItem(Long productId) {
         validateActiveSale();
