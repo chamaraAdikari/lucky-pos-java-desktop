@@ -6,12 +6,18 @@ package com.turboboostteam.pos.jooq;
 
 import com.turboboostteam.pos.jooq.tables.Categories;
 import com.turboboostteam.pos.jooq.tables.InventoryStock;
+import com.turboboostteam.pos.jooq.tables.Payments;
 import com.turboboostteam.pos.jooq.tables.Products;
+import com.turboboostteam.pos.jooq.tables.SaleItems;
+import com.turboboostteam.pos.jooq.tables.Sales;
 import com.turboboostteam.pos.jooq.tables.StockMovements;
 import com.turboboostteam.pos.jooq.tables.Users;
 import com.turboboostteam.pos.jooq.tables.records.CategoriesRecord;
 import com.turboboostteam.pos.jooq.tables.records.InventoryStockRecord;
+import com.turboboostteam.pos.jooq.tables.records.PaymentsRecord;
 import com.turboboostteam.pos.jooq.tables.records.ProductsRecord;
+import com.turboboostteam.pos.jooq.tables.records.SaleItemsRecord;
+import com.turboboostteam.pos.jooq.tables.records.SalesRecord;
 import com.turboboostteam.pos.jooq.tables.records.StockMovementsRecord;
 import com.turboboostteam.pos.jooq.tables.records.UsersRecord;
 
@@ -36,8 +42,12 @@ public class Keys {
     public static final UniqueKey<CategoriesRecord> CONSTRAINT_6 = Internal.createUniqueKey(Categories.CATEGORIES, DSL.name("CONSTRAINT_6"), new TableField[] { Categories.CATEGORIES.ID }, true);
     public static final UniqueKey<CategoriesRecord> CONSTRAINT_6A = Internal.createUniqueKey(Categories.CATEGORIES, DSL.name("CONSTRAINT_6A"), new TableField[] { Categories.CATEGORIES.NAME }, true);
     public static final UniqueKey<InventoryStockRecord> CONSTRAINT_3 = Internal.createUniqueKey(InventoryStock.INVENTORY_STOCK, DSL.name("CONSTRAINT_3"), new TableField[] { InventoryStock.INVENTORY_STOCK.ID }, true);
+    public static final UniqueKey<PaymentsRecord> CONSTRAINT_8 = Internal.createUniqueKey(Payments.PAYMENTS, DSL.name("CONSTRAINT_8"), new TableField[] { Payments.PAYMENTS.ID }, true);
     public static final UniqueKey<ProductsRecord> CONSTRAINT_F = Internal.createUniqueKey(Products.PRODUCTS, DSL.name("CONSTRAINT_F"), new TableField[] { Products.PRODUCTS.ID }, true);
     public static final UniqueKey<ProductsRecord> CONSTRAINT_F2 = Internal.createUniqueKey(Products.PRODUCTS, DSL.name("CONSTRAINT_F2"), new TableField[] { Products.PRODUCTS.BARCODE }, true);
+    public static final UniqueKey<SaleItemsRecord> CONSTRAINT_98 = Internal.createUniqueKey(SaleItems.SALE_ITEMS, DSL.name("CONSTRAINT_98"), new TableField[] { SaleItems.SALE_ITEMS.ID }, true);
+    public static final UniqueKey<SalesRecord> CONSTRAINT_4B = Internal.createUniqueKey(Sales.SALES, DSL.name("CONSTRAINT_4B"), new TableField[] { Sales.SALES.ID }, true);
+    public static final UniqueKey<SalesRecord> CONSTRAINT_4B0 = Internal.createUniqueKey(Sales.SALES, DSL.name("CONSTRAINT_4B0"), new TableField[] { Sales.SALES.SALE_NUMBER }, true);
     public static final UniqueKey<StockMovementsRecord> CONSTRAINT_9 = Internal.createUniqueKey(StockMovements.STOCK_MOVEMENTS, DSL.name("CONSTRAINT_9"), new TableField[] { StockMovements.STOCK_MOVEMENTS.ID }, true);
     public static final UniqueKey<UsersRecord> CONSTRAINT_4 = Internal.createUniqueKey(Users.USERS, DSL.name("CONSTRAINT_4"), new TableField[] { Users.USERS.ID }, true);
     public static final UniqueKey<UsersRecord> CONSTRAINT_4D = Internal.createUniqueKey(Users.USERS, DSL.name("CONSTRAINT_4D"), new TableField[] { Users.USERS.USERNAME }, true);
@@ -47,6 +57,10 @@ public class Keys {
     // -------------------------------------------------------------------------
 
     public static final ForeignKey<InventoryStockRecord, ProductsRecord> CONSTRAINT_3B = Internal.createForeignKey(InventoryStock.INVENTORY_STOCK, DSL.name("CONSTRAINT_3B"), new TableField[] { InventoryStock.INVENTORY_STOCK.PRODUCT_ID }, Keys.CONSTRAINT_F, new TableField[] { Products.PRODUCTS.ID }, true);
+    public static final ForeignKey<PaymentsRecord, SalesRecord> CONSTRAINT_81 = Internal.createForeignKey(Payments.PAYMENTS, DSL.name("CONSTRAINT_81"), new TableField[] { Payments.PAYMENTS.SALE_ID }, Keys.CONSTRAINT_4B, new TableField[] { Sales.SALES.ID }, true);
     public static final ForeignKey<ProductsRecord, CategoriesRecord> CONSTRAINT_F2D = Internal.createForeignKey(Products.PRODUCTS, DSL.name("CONSTRAINT_F2D"), new TableField[] { Products.PRODUCTS.CATEGORY_ID }, Keys.CONSTRAINT_6, new TableField[] { Categories.CATEGORIES.ID }, true);
+    public static final ForeignKey<SaleItemsRecord, SalesRecord> CONSTRAINT_985 = Internal.createForeignKey(SaleItems.SALE_ITEMS, DSL.name("CONSTRAINT_985"), new TableField[] { SaleItems.SALE_ITEMS.SALE_ID }, Keys.CONSTRAINT_4B, new TableField[] { Sales.SALES.ID }, true);
+    public static final ForeignKey<SaleItemsRecord, ProductsRecord> CONSTRAINT_985F = Internal.createForeignKey(SaleItems.SALE_ITEMS, DSL.name("CONSTRAINT_985F"), new TableField[] { SaleItems.SALE_ITEMS.PRODUCT_ID }, Keys.CONSTRAINT_F, new TableField[] { Products.PRODUCTS.ID }, true);
+    public static final ForeignKey<SalesRecord, UsersRecord> CONSTRAINT_4B05 = Internal.createForeignKey(Sales.SALES, DSL.name("CONSTRAINT_4B05"), new TableField[] { Sales.SALES.CASHIER_ID }, Keys.CONSTRAINT_4, new TableField[] { Users.USERS.ID }, true);
     public static final ForeignKey<StockMovementsRecord, ProductsRecord> CONSTRAINT_99 = Internal.createForeignKey(StockMovements.STOCK_MOVEMENTS, DSL.name("CONSTRAINT_99"), new TableField[] { StockMovements.STOCK_MOVEMENTS.PRODUCT_ID }, Keys.CONSTRAINT_F, new TableField[] { Products.PRODUCTS.ID }, true);
 }

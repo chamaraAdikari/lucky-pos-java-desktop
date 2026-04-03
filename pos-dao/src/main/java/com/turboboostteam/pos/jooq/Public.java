@@ -6,7 +6,10 @@ package com.turboboostteam.pos.jooq;
 
 import com.turboboostteam.pos.jooq.tables.Categories;
 import com.turboboostteam.pos.jooq.tables.InventoryStock;
+import com.turboboostteam.pos.jooq.tables.Payments;
 import com.turboboostteam.pos.jooq.tables.Products;
+import com.turboboostteam.pos.jooq.tables.SaleItems;
+import com.turboboostteam.pos.jooq.tables.Sales;
 import com.turboboostteam.pos.jooq.tables.StockMovements;
 import com.turboboostteam.pos.jooq.tables.Users;
 
@@ -42,9 +45,24 @@ public class Public extends SchemaImpl {
     public final InventoryStock INVENTORY_STOCK = InventoryStock.INVENTORY_STOCK;
 
     /**
+     * The table <code>PUBLIC.PAYMENTS</code>.
+     */
+    public final Payments PAYMENTS = Payments.PAYMENTS;
+
+    /**
      * The table <code>PUBLIC.PRODUCTS</code>.
      */
     public final Products PRODUCTS = Products.PRODUCTS;
+
+    /**
+     * The table <code>PUBLIC.SALE_ITEMS</code>.
+     */
+    public final SaleItems SALE_ITEMS = SaleItems.SALE_ITEMS;
+
+    /**
+     * The table <code>PUBLIC.SALES</code>.
+     */
+    public final Sales SALES = Sales.SALES;
 
     /**
      * The table <code>PUBLIC.STOCK_MOVEMENTS</code>.
@@ -74,7 +92,10 @@ public class Public extends SchemaImpl {
         return Arrays.asList(
             Categories.CATEGORIES,
             InventoryStock.INVENTORY_STOCK,
+            Payments.PAYMENTS,
             Products.PRODUCTS,
+            SaleItems.SALE_ITEMS,
+            Sales.SALES,
             StockMovements.STOCK_MOVEMENTS,
             Users.USERS
         );

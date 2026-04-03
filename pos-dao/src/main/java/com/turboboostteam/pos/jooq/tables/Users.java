@@ -6,6 +6,7 @@ package com.turboboostteam.pos.jooq.tables;
 
 import com.turboboostteam.pos.jooq.Keys;
 import com.turboboostteam.pos.jooq.Public;
+import com.turboboostteam.pos.jooq.tables.Sales.SalesPath;
 import com.turboboostteam.pos.jooq.tables.records.UsersRecord;
 
 import java.time.LocalDateTime;
@@ -15,10 +16,14 @@ import java.util.List;
 
 import org.jooq.Condition;
 import org.jooq.Field;
+import org.jooq.ForeignKey;
 import org.jooq.Identity;
+import org.jooq.InverseForeignKey;
 import org.jooq.Name;
+import org.jooq.Path;
 import org.jooq.PlainSQL;
 import org.jooq.QueryPart;
+import org.jooq.Record;
 import org.jooq.SQL;
 import org.jooq.Schema;
 import org.jooq.Select;
@@ -112,6 +117,39 @@ public class Users extends TableImpl<UsersRecord> {
         this(DSL.name("USERS"), null);
     }
 
+    public <O extends Record> Users(Table<O> path, ForeignKey<O, UsersRecord> childPath, InverseForeignKey<O, UsersRecord> parentPath) {
+        super(path, childPath, parentPath, USERS);
+    }
+
+    /**
+     * A subtype implementing {@link Path} for simplified path-based joins.
+     */
+    public static class UsersPath extends Users implements Path<UsersRecord> {
+
+        private static final long serialVersionUID = 1L;
+        public <O extends Record> UsersPath(Table<O> path, ForeignKey<O, UsersRecord> childPath, InverseForeignKey<O, UsersRecord> parentPath) {
+            super(path, childPath, parentPath);
+        }
+        private UsersPath(Name alias, Table<UsersRecord> aliased) {
+            super(alias, aliased);
+        }
+
+        @Override
+        public UsersPath as(String alias) {
+            return new UsersPath(DSL.name(alias), this);
+        }
+
+        @Override
+        public UsersPath as(Name alias) {
+            return new UsersPath(alias, this);
+        }
+
+        @Override
+        public UsersPath as(Table<?> alias) {
+            return new UsersPath(alias.getQualifiedName(), this);
+        }
+    }
+
     @Override
     public Schema getSchema() {
         return aliased() ? null : Public.PUBLIC;
@@ -130,6 +168,18 @@ public class Users extends TableImpl<UsersRecord> {
     @Override
     public List<UniqueKey<UsersRecord>> getUniqueKeys() {
         return Arrays.asList(Keys.CONSTRAINT_4D);
+    }
+
+    private transient SalesPath _sales;
+
+    /**
+     * Get the implicit to-many join path to the <code>PUBLIC.SALES</code> table
+     */
+    public SalesPath sales() {
+        if (_sales == null)
+            _sales = new SalesPath(this, null, Keys.CONSTRAINT_4B05.getInverseKey());
+
+        return _sales;
     }
 
     @Override

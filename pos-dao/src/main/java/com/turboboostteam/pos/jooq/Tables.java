@@ -6,7 +6,10 @@ package com.turboboostteam.pos.jooq;
 
 import com.turboboostteam.pos.jooq.tables.Categories;
 import com.turboboostteam.pos.jooq.tables.InventoryStock;
+import com.turboboostteam.pos.jooq.tables.Payments;
 import com.turboboostteam.pos.jooq.tables.Products;
+import com.turboboostteam.pos.jooq.tables.SaleItems;
+import com.turboboostteam.pos.jooq.tables.Sales;
 import com.turboboostteam.pos.jooq.tables.StockMovements;
 import com.turboboostteam.pos.jooq.tables.Users;
 
@@ -28,9 +31,24 @@ public class Tables {
     public static final InventoryStock INVENTORY_STOCK = InventoryStock.INVENTORY_STOCK;
 
     /**
+     * The table <code>PUBLIC.PAYMENTS</code>.
+     */
+    public static final Payments PAYMENTS = Payments.PAYMENTS;
+
+    /**
      * The table <code>PUBLIC.PRODUCTS</code>.
      */
     public static final Products PRODUCTS = Products.PRODUCTS;
+
+    /**
+     * The table <code>PUBLIC.SALE_ITEMS</code>.
+     */
+    public static final SaleItems SALE_ITEMS = SaleItems.SALE_ITEMS;
+
+    /**
+     * The table <code>PUBLIC.SALES</code>.
+     */
+    public static final Sales SALES = Sales.SALES;
 
     /**
      * The table <code>PUBLIC.STOCK_MOVEMENTS</code>.
