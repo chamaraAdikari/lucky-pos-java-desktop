@@ -5,6 +5,7 @@ import com.turboboostteam.pos.model.enums.PaymentType;
 import com.turboboostteam.pos.model.sale.*;
 
 import javax.money.MonetaryAmount;
+import java.math.BigDecimal;
 
 public class SaleService {
 
@@ -12,6 +13,7 @@ public class SaleService {
     private final InventoryService inventoryService;
     private final TaxService taxService;
     private final ProductService productService;
+    private final LoyaltyService loyaltyService;
 
     private SaleTransaction currentSale;
 
@@ -19,11 +21,13 @@ public class SaleService {
     public SaleService(SaleDao saleDao,
                        InventoryService inventoryService,
                        TaxService taxService,
-                       ProductService productService) {
+                       ProductService productService,
+                       LoyaltyService loyaltyService) {
         this.saleDao          = saleDao;
         this.inventoryService = inventoryService;
         this.taxService       = taxService;
         this.productService   = productService;
+        this.loyaltyService   = loyaltyService;
     }
 
     public void addItem(SaleItem item) {
@@ -101,6 +105,17 @@ public class SaleService {
                         item.getQuantity(),
                         username)
         );
+
+        // 5. Award loyalty points if customer attached ← ADD
+        if (currentSale.getCustomerId() != null) {
+            BigDecimal totalAmount = currentSale
+                    .getTotalAmount()
+                    .getNumber()
+                    .numberValue(BigDecimal.class);
+            loyaltyService.awardPoints(
+                    currentSale.getCustomerId(),
+                    totalAmount);
+        }
 
         AuditLogger.saleCompleted(username,
                 currentSale.getSaleNumber());

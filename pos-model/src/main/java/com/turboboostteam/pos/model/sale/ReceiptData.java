@@ -19,6 +19,8 @@ public class ReceiptData {
     private final MonetaryAmount changeAmount;
     private final String paymentType;
     private final String paymentReference;
+    private final int pointsEarned;
+    private final int totalPoints;
 
     public ReceiptData(String saleNumber,
                        String cashierName,
@@ -31,7 +33,9 @@ public class ReceiptData {
                        MonetaryAmount amountTendered,
                        MonetaryAmount changeAmount,
                        String paymentType,
-                       String paymentReference) {
+                       String paymentReference,
+                       int pointsEarned,
+                       int totalPoints) {
         this.saleNumber       = saleNumber;
         this.cashierName      = cashierName;
         this.dateTime         = dateTime;
@@ -44,6 +48,8 @@ public class ReceiptData {
         this.changeAmount     = changeAmount;
         this.paymentType      = paymentType;
         this.paymentReference = paymentReference;
+        this.pointsEarned     = pointsEarned;
+        this.totalPoints      = totalPoints;
     }
 
     public String getSaleNumber()            { return saleNumber; }
@@ -58,4 +64,6 @@ public class ReceiptData {
     public MonetaryAmount getChangeAmount()  { return changeAmount; }
     public String getPaymentType()           { return paymentType; }
     public String getPaymentReference()      { return paymentReference; }
+    public int getPointsEarned()  { return pointsEarned; }
+    public int getTotalPoints()   { return totalPoints; }
 }

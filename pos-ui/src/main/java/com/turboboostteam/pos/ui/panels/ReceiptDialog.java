@@ -105,6 +105,18 @@ public class ReceiptDialog extends JDialog {
                     receiptData.getChangeAmount().toString());
         }
 
+        if (receiptData.getPointsEarned() > 0) {
+            preview.add(new JSeparator(), "growx");
+            addReceiptLine(preview,
+                    "🎁 Points Earned: +"
+                            + receiptData.getPointsEarned(),
+                    true, 11, new Color(34, 139, 34));
+            addReceiptLine(preview,
+                    "Total Points: "
+                            + receiptData.getTotalPoints(),
+                    false, 10, Color.GRAY);
+        }
+
         addReceiptLine(preview,
                 "*** Thank You! ***",
                 true, 12, new Color(34, 139, 34));

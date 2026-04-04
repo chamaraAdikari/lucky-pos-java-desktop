@@ -66,12 +66,14 @@ public class AppConfig {
     }
 
     @Bean
-    public SaleService saleService(SaleDao saleDao,
-                                   InventoryService inventoryService,
-                                   TaxService taxService,
-                                   ProductService productService) {
+    public SaleService saleService(
+            SaleDao saleDao,
+            InventoryService inventoryService,
+            TaxService taxService,
+            ProductService productService,
+            LoyaltyService loyaltyService) {
         return new SaleService(saleDao, inventoryService,
-                taxService, productService);
+                taxService, productService, loyaltyService);
     }
 
     @Bean
@@ -96,4 +98,9 @@ public class AppConfig {
         return new CustomerService(customerDao);
     }
 
+    @Bean
+    public LoyaltyService loyaltyService(
+            CustomerDao customerDao) {
+        return new LoyaltyService(customerDao);
+    }
 }

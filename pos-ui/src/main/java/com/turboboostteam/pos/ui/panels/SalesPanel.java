@@ -191,6 +191,65 @@ public class SalesPanel extends JPanel {
         customerRow.add(attachBtn,     "gap 4");
         leftPanel.add(customerRow, "growx");
 
+        JButton redeemBtn = new JButton("🎁 Redeem Points");
+        redeemBtn.addActionListener(e -> {
+            if (currentSale.getCustomerId() == null) {
+                JOptionPane.showMessageDialog(this,
+                        "Attach a customer first!");
+                return;
+            }
+
+            CustomerService cs =
+                    AppContext.getBean(CustomerService.class);
+            LoyaltyService ls =
+                    AppContext.getBean(LoyaltyService.class);
+
+            cs.findById(currentSale.getCustomerId())
+                    .ifPresent(customer -> {
+                        Frame parent = (Frame) SwingUtilities
+                                .getWindowAncestor(this);
+
+                        LoyaltyRedemptionDialog dialog =
+                                new LoyaltyRedemptionDialog(
+                                        parent, customer, ls,
+                                        currentSale.getTotalAmount());
+                        dialog.setVisible(true);
+
+                        LoyaltyService.RedemptionResult result =
+                                dialog.getResult();
+
+                        if (result != null && result.isSuccess()) {
+                            // Apply as discount
+                            currentSale.applyDiscount(
+                                    result.getDiscountValue());
+
+                            // Deduct points from customer
+                            ls.deductPoints(
+                                    currentSale.getCustomerId(),
+                                    result.getPointsRedeemed());
+
+                            customerLabel.setText(
+                                    "👤 " + customer.getFullName()
+                                            + " — " + customer.getLoyaltyTier()
+                                            + " — "
+                                            + (customer.getLoyaltyPoints()
+                                            - result.getPointsRedeemed())
+                                            + " pts remaining");
+
+                            setStatus("✅ Redeemed "
+                                    + result.getPointsRedeemed()
+                                    + " pts → "
+                                    + result.getDiscountValue()
+                                    + " off");
+                            refreshCart();
+                        }
+                    });
+        });
+
+        customerRow.add(customerLabel, "growx");
+        customerRow.add(attachBtn,     "gap 4");
+        customerRow.add(redeemBtn,     "gap 4");
+
 
         // Product quick-select grid
         JPanel productGrid = buildProductGrid();
@@ -465,7 +524,9 @@ public class SalesPanel extends JPanel {
                                 : total,
                         paymentResult.getChangeAmount(),
                         type,
-                        paymentResult.getReference()
+                        paymentResult.getReference(),
+                        0,
+                        0
                 );
 
                 // Show receipt dialog
