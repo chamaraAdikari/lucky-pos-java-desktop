@@ -5,6 +5,7 @@ package com.turboboostteam.pos.jooq;
 
 
 import com.turboboostteam.pos.jooq.tables.Categories;
+import com.turboboostteam.pos.jooq.tables.Discounts;
 import com.turboboostteam.pos.jooq.tables.InventoryStock;
 import com.turboboostteam.pos.jooq.tables.Payments;
 import com.turboboostteam.pos.jooq.tables.Products;
@@ -24,6 +25,11 @@ public class Tables {
      * The table <code>PUBLIC.CATEGORIES</code>.
      */
     public static final Categories CATEGORIES = Categories.CATEGORIES;
+
+    /**
+     * The table <code>PUBLIC.DISCOUNTS</code>.
+     */
+    public static final Discounts DISCOUNTS = Discounts.DISCOUNTS;
 
     /**
      * The table <code>PUBLIC.INVENTORY_STOCK</code>.

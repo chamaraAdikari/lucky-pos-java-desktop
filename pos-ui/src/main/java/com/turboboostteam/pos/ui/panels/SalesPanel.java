@@ -7,6 +7,7 @@ import com.turboboostteam.pos.model.sale.SaleItem;
 import com.turboboostteam.pos.model.sale.SaleTransaction;
 import com.turboboostteam.pos.service.ProductService;
 import com.turboboostteam.pos.service.SaleService;
+import com.turboboostteam.pos.service.DiscountService;
 import com.turboboostteam.pos.service.SessionManager;
 import com.turboboostteam.pos.service.payment.PaymentResult;
 import com.turboboostteam.pos.ui.components.CartTableModel;
@@ -82,6 +83,66 @@ public class SalesPanel extends JPanel {
         searchRow.add(barcodeField, "growx");
         searchRow.add(searchBtn,    "gap 4");
         leftPanel.add(searchRow, "growx");
+
+        // Coupon code row
+        JPanel couponRow = new JPanel(
+                new MigLayout("insets 0", "[grow][][]"));
+        JTextField couponField = new JTextField();
+        couponField.putClientProperty(
+                "JTextField.placeholderText",
+                "Enter coupon code...");
+
+        JButton applyBtn   = new JButton("🏷️ Apply");
+        JButton removeCouponBtn = new JButton("✖");
+        removeCouponBtn.setToolTipText("Remove discount");
+
+        JLabel couponLabel = new JLabel(" ");
+        couponLabel.setForeground(new Color(34, 139, 34));
+        couponLabel.setFont(
+                new Font("SansSerif", Font.BOLD, 12));
+
+        DiscountService discountService =
+                AppContext.getBean(DiscountService.class);
+
+        applyBtn.addActionListener(e -> {
+            String code = couponField.getText().trim();
+            if (code.isEmpty()) return;
+
+            var result = discountService.applyCode(
+                    code, currentSale);
+
+            if (result.isPresent()) {
+                var applied = result.get();
+                currentSale.applyDiscount(
+                        applied.discountAmount());
+                couponLabel.setText("✅ "
+                        + applied.getDescription());
+                couponField.setEnabled(false);
+                applyBtn.setEnabled(false);
+                refreshCart();
+            } else {
+                couponLabel.setText(
+                        "❌ Invalid or expired code");
+                couponLabel.setForeground(Color.RED);
+            }
+        });
+
+        removeCouponBtn.addActionListener(e -> {
+            currentSale.clearDiscount();
+            couponField.setText("");
+            couponField.setEnabled(true);
+            applyBtn.setEnabled(true);
+            couponLabel.setText(" ");
+            couponLabel.setForeground(
+                    new Color(34, 139, 34));
+            refreshCart();
+        });
+
+        couponRow.add(couponField, "growx");
+        couponRow.add(applyBtn,        "gap 4");
+        couponRow.add(removeCouponBtn, "gap 4");
+        leftPanel.add(couponRow,  "growx");
+        leftPanel.add(couponLabel, "growx");
 
         // Product quick-select grid
         JPanel productGrid = buildProductGrid();

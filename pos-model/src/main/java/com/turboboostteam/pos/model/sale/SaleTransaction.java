@@ -113,6 +113,17 @@ public class SaleTransaction {
                 .subtract(discountAmount);
     }
 
+    // ---- Discount ----
+    public void applyDiscount(MonetaryAmount amount) {
+        validateOpen();
+        this.discountAmount = this.discountAmount.add(amount);
+    }
+
+    public void clearDiscount() {
+        validateOpen();
+        this.discountAmount = Money.of(0, CURRENCY);
+    }
+
     // ---- Private ----
 
     private void validateOpen() {
@@ -143,4 +154,6 @@ public class SaleTransaction {
     public LocalDateTime getCompletedAt()    { return completedAt; }
     public boolean isEmpty()                 { return items.isEmpty(); }
     public int getItemCount()                { return items.size(); }
+
+
 }

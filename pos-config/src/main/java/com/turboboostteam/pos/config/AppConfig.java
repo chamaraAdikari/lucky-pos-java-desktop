@@ -74,6 +74,17 @@ public class AppConfig {
                 taxService, productService);
     }
 
+    @Bean
+    public DiscountDao discountDao(DSLContext dsl) {
+        return new DiscountDaoImpl(dsl);
+    }
+
+    @Bean
+    public DiscountService discountService(
+            DiscountDao discountDao) {
+        return new DiscountService(discountDao);
+    }
+
 
 
 }

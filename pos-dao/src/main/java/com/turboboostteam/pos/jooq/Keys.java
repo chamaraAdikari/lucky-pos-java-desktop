@@ -5,6 +5,7 @@ package com.turboboostteam.pos.jooq;
 
 
 import com.turboboostteam.pos.jooq.tables.Categories;
+import com.turboboostteam.pos.jooq.tables.Discounts;
 import com.turboboostteam.pos.jooq.tables.InventoryStock;
 import com.turboboostteam.pos.jooq.tables.Payments;
 import com.turboboostteam.pos.jooq.tables.Products;
@@ -13,6 +14,7 @@ import com.turboboostteam.pos.jooq.tables.Sales;
 import com.turboboostteam.pos.jooq.tables.StockMovements;
 import com.turboboostteam.pos.jooq.tables.Users;
 import com.turboboostteam.pos.jooq.tables.records.CategoriesRecord;
+import com.turboboostteam.pos.jooq.tables.records.DiscountsRecord;
 import com.turboboostteam.pos.jooq.tables.records.InventoryStockRecord;
 import com.turboboostteam.pos.jooq.tables.records.PaymentsRecord;
 import com.turboboostteam.pos.jooq.tables.records.ProductsRecord;
@@ -41,6 +43,8 @@ public class Keys {
 
     public static final UniqueKey<CategoriesRecord> CONSTRAINT_6 = Internal.createUniqueKey(Categories.CATEGORIES, DSL.name("CONSTRAINT_6"), new TableField[] { Categories.CATEGORIES.ID }, true);
     public static final UniqueKey<CategoriesRecord> CONSTRAINT_6A = Internal.createUniqueKey(Categories.CATEGORIES, DSL.name("CONSTRAINT_6A"), new TableField[] { Categories.CATEGORIES.NAME }, true);
+    public static final UniqueKey<DiscountsRecord> CONSTRAINT_9E = Internal.createUniqueKey(Discounts.DISCOUNTS, DSL.name("CONSTRAINT_9E"), new TableField[] { Discounts.DISCOUNTS.ID }, true);
+    public static final UniqueKey<DiscountsRecord> CONSTRAINT_9ED = Internal.createUniqueKey(Discounts.DISCOUNTS, DSL.name("CONSTRAINT_9ED"), new TableField[] { Discounts.DISCOUNTS.CODE }, true);
     public static final UniqueKey<InventoryStockRecord> CONSTRAINT_3 = Internal.createUniqueKey(InventoryStock.INVENTORY_STOCK, DSL.name("CONSTRAINT_3"), new TableField[] { InventoryStock.INVENTORY_STOCK.ID }, true);
     public static final UniqueKey<PaymentsRecord> CONSTRAINT_8 = Internal.createUniqueKey(Payments.PAYMENTS, DSL.name("CONSTRAINT_8"), new TableField[] { Payments.PAYMENTS.ID }, true);
     public static final UniqueKey<ProductsRecord> CONSTRAINT_F = Internal.createUniqueKey(Products.PRODUCTS, DSL.name("CONSTRAINT_F"), new TableField[] { Products.PRODUCTS.ID }, true);
