@@ -63,9 +63,13 @@ public class MainFrame extends JFrame {
         cardLayout.show(contentArea, panelName);
         // Refresh panel when navigated to
         Component[] components = contentArea.getComponents();
+
         for (Component c : components) {
-            if (c.isVisible() && c instanceof VoidRefundPanel) {
-                ((VoidRefundPanel) c).refresh();
+            if (c.isVisible()) {
+                if (c instanceof VoidRefundPanel)
+                    ((VoidRefundPanel) c).refresh();
+                if (c instanceof ReportsPanel)
+                    ((ReportsPanel) c).refresh();
             }
         }
     }

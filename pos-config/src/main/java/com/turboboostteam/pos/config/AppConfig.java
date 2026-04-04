@@ -111,4 +111,15 @@ public class AppConfig {
         return new VoidRefundService(saleDao,
                 inventoryService);
     }
+
+    @Bean
+    public ReportDao reportDao(DSLContext dsl) {
+        return new ReportDaoImpl(dsl);
+    }
+
+    @Bean
+    public ReportService reportService(ReportDao reportDao) {
+        return new ReportService(reportDao);
+    }
+
 }
