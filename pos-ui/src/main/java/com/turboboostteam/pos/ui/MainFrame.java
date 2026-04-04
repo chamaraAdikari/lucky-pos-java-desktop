@@ -47,6 +47,7 @@ public class MainFrame extends JFrame {
         contentArea.add(new CustomerPanel(),  "CUSTOMERS");
         contentArea.add(new ReportsPanel(),   "REPORTS");
         contentArea.add(new VoidRefundPanel(), "VOIDREFUND");
+        contentArea.add(new DashboardPanel(), "DASHBOARD");
 
         // Assemble
         root.add(header,      "span 2, growx, wrap");
@@ -70,6 +71,8 @@ public class MainFrame extends JFrame {
                     ((VoidRefundPanel) c).refresh();
                 if (c instanceof ReportsPanel)
                     ((ReportsPanel) c).refresh();
+                if (c instanceof DashboardPanel)
+                    ((DashboardPanel) c).refresh();
             }
         }
     }

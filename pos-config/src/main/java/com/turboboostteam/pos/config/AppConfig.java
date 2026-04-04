@@ -122,4 +122,15 @@ public class AppConfig {
         return new ReportService(reportDao);
     }
 
+    @Bean
+    public AnalyticsDao analyticsDao(DSLContext dsl) {
+        return new AnalyticsDaoImpl(dsl);
+    }
+
+    @Bean
+    public AnalyticsService analyticsService(
+            AnalyticsDao analyticsDao) {
+        return new AnalyticsService(analyticsDao);
+    }
+
 }

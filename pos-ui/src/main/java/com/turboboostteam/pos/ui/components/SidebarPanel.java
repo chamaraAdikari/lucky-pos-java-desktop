@@ -36,6 +36,7 @@ public class SidebarPanel extends JPanel {
         addNavButton("📦  Products",  "PRODUCTS");
         addNavButton("🏭  Inventory", "INVENTORY");
         addNavButton("👤  Customers", "CUSTOMERS");
+        addNavButton("📈  Dashboard", "DASHBOARD");
 
         // Role-based — only ADMIN and SUPERVISOR
         Role role = SessionManager.getInstance().getCurrentUser().getRole();
