@@ -5,6 +5,7 @@ package com.turboboostteam.pos.jooq;
 
 
 import com.turboboostteam.pos.jooq.tables.Categories;
+import com.turboboostteam.pos.jooq.tables.Customers;
 import com.turboboostteam.pos.jooq.tables.Discounts;
 import com.turboboostteam.pos.jooq.tables.InventoryStock;
 import com.turboboostteam.pos.jooq.tables.Payments;
@@ -39,6 +40,11 @@ public class Public extends SchemaImpl {
      * The table <code>PUBLIC.CATEGORIES</code>.
      */
     public final Categories CATEGORIES = Categories.CATEGORIES;
+
+    /**
+     * The table <code>PUBLIC.CUSTOMERS</code>.
+     */
+    public final Customers CUSTOMERS = Customers.CUSTOMERS;
 
     /**
      * The table <code>PUBLIC.DISCOUNTS</code>.
@@ -97,6 +103,7 @@ public class Public extends SchemaImpl {
     public final List<Table<?>> getTables() {
         return Arrays.asList(
             Categories.CATEGORIES,
+            Customers.CUSTOMERS,
             Discounts.DISCOUNTS,
             InventoryStock.INVENTORY_STOCK,
             Payments.PAYMENTS,

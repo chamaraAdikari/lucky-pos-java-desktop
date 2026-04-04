@@ -85,6 +85,15 @@ public class AppConfig {
         return new DiscountService(discountDao);
     }
 
+    @Bean
+    public CustomerDao customerDao(DSLContext dsl) {
+        return new CustomerDaoImpl(dsl);
+    }
 
+    @Bean
+    public CustomerService customerService(
+            CustomerDao customerDao) {
+        return new CustomerService(customerDao);
+    }
 
 }

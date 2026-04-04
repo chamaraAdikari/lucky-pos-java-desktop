@@ -22,6 +22,7 @@ public class SaleTransaction {
     private final LocalDateTime createdAt;
     private LocalDateTime completedAt;
     private static final String CURRENCY = "USD";
+    private Long customerId;
 
     public SaleTransaction(Long cashierId) {
         this.cashierId      = cashierId;
@@ -142,6 +143,8 @@ public class SaleTransaction {
     public void setId(Long id)              { this.id = id; }
     public void setTaxAmount(MonetaryAmount t)      { taxAmount = t; }
     public void setDiscountAmount(MonetaryAmount d) { discountAmount = d; }
+    public void setCustomerId(Long customerId) {this.customerId = customerId; }
+
 
     public Long getId()                      { return id; }
     public String getSaleNumber()            { return saleNumber; }
@@ -152,6 +155,7 @@ public class SaleTransaction {
     public MonetaryAmount getDiscountAmount(){ return discountAmount; }
     public LocalDateTime getCreatedAt()      { return createdAt; }
     public LocalDateTime getCompletedAt()    { return completedAt; }
+    public Long getCustomerId() { return customerId; }
     public boolean isEmpty()                 { return items.isEmpty(); }
     public int getItemCount()                { return items.size(); }
 

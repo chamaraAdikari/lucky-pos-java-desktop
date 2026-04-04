@@ -1,14 +1,12 @@
 package com.turboboostteam.pos.ui.panels;
 
 import com.turboboostteam.pos.config.AppContext;
+import com.turboboostteam.pos.model.customer.Customer;
 import com.turboboostteam.pos.model.product.Product;
 import com.turboboostteam.pos.model.sale.ReceiptData;
 import com.turboboostteam.pos.model.sale.SaleItem;
 import com.turboboostteam.pos.model.sale.SaleTransaction;
-import com.turboboostteam.pos.service.ProductService;
-import com.turboboostteam.pos.service.SaleService;
-import com.turboboostteam.pos.service.DiscountService;
-import com.turboboostteam.pos.service.SessionManager;
+import com.turboboostteam.pos.service.*;
 import com.turboboostteam.pos.service.payment.PaymentResult;
 import com.turboboostteam.pos.ui.components.CartTableModel;
 import com.turboboostteam.pos.ui.components.NumpadPanel;
@@ -143,6 +141,56 @@ public class SalesPanel extends JPanel {
         couponRow.add(removeCouponBtn, "gap 4");
         leftPanel.add(couponRow,  "growx");
         leftPanel.add(couponLabel, "growx");
+
+        // Customer row
+        JPanel customerRow = new JPanel(
+                new MigLayout("insets 0", "[grow][]"));
+        JLabel customerLabel = new JLabel(
+                "👤 No customer attached");
+        customerLabel.setFont(
+                new Font("SansSerif", Font.ITALIC, 12));
+        JButton attachBtn = new JButton("🔍 Find Customer");
+
+        attachBtn.addActionListener(e -> {
+            CustomerService cs =
+                    AppContext.getBean(CustomerService.class);
+            String query = JOptionPane.showInputDialog(
+                    this,
+                    "Search by name or phone:",
+                    "Find Customer",
+                    JOptionPane.PLAIN_MESSAGE);
+            if (query == null || query.trim().isEmpty()) return;
+
+            List<Customer> results = cs.search(query.trim());
+            if (results.isEmpty()) {
+                JOptionPane.showMessageDialog(this,
+                        "No customer found.");
+                return;
+            }
+
+            Customer selected = (Customer) JOptionPane
+                    .showInputDialog(this,
+                            "Select customer:",
+                            "Customers Found",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null,
+                            results.toArray(),
+                            results.get(0));
+
+            if (selected != null) {
+                currentSale.setCustomerId(selected.getId());
+                customerLabel.setText(
+                        "👤 " + selected.getFullName()
+                                + " — " + selected.getLoyaltyTier()
+                                + " — " + selected.getLoyaltyPoints()
+                                + " pts");
+            }
+        });
+
+        customerRow.add(customerLabel, "growx");
+        customerRow.add(attachBtn,     "gap 4");
+        leftPanel.add(customerRow, "growx");
+
 
         // Product quick-select grid
         JPanel productGrid = buildProductGrid();
