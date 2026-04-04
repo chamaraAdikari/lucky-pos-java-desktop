@@ -132,4 +132,89 @@ public class SaleDaoImpl implements SaleDao {
         return amount.getNumber()
                 .numberValue(BigDecimal.class);
     }
+
+    @Override
+    public void voidSale(Long saleId) {
+        dsl.update(SALES)
+                .set(SALES.STATUS,
+                        SaleStatus.VOIDED.name())
+                .set(SALES.COMPLETED_AT,
+                        java.time.LocalDateTime.now())
+                .where(SALES.ID.eq(saleId))
+                .execute();
+    }
+
+    @Override
+    public void refundSale(Long saleId, String status) {
+        dsl.update(SALES)
+                .set(SALES.STATUS, status)
+                .set(SALES.COMPLETED_AT,
+                        java.time.LocalDateTime.now())
+                .where(SALES.ID.eq(saleId))
+                .execute();
+    }
+
+    @Override
+    public List<SaleTransaction> findRecentSales(int limit) {
+        return dsl.selectFrom(SALES)
+                .where(SALES.STATUS.eq(
+                        SaleStatus.COMMITTED.name()))
+                .orderBy(SALES.CREATED_AT.desc()) // newest first
+                .limit(limit)
+                .fetch()
+                .map(r -> new SaleTransaction(
+                        r.getId(),
+                        r.getSaleNumber(),
+                        r.getCashierId(),
+                        SaleStatus.valueOf(r.getStatus()),
+                        List.of(),
+                        Money.of(r.getTaxAmount(), "USD"),
+                        Money.of(r.getDiscountAmount(), "USD"),
+                        r.getCreatedAt(),
+                        r.getCompletedAt()
+                ));
+    }
+
+    @Override
+    public Optional<SaleTransaction> findById(Long id) {
+        var record = dsl.selectFrom(SALES)
+                .where(SALES.ID.eq(id))
+                .fetchOne();
+        if (record == null) return Optional.empty();
+        return Optional.of(new SaleTransaction(
+                record.getId(),
+                record.getSaleNumber(),
+                record.getCashierId(),
+                SaleStatus.valueOf(record.getStatus()),
+                List.of(),
+                Money.of(record.getTaxAmount(), "USD"),
+                Money.of(record.getDiscountAmount(), "USD"),
+                record.getCreatedAt(),
+                record.getCompletedAt()
+        ));
+    }
+
+    @Override
+    public List<SaleItem> findItemsBySaleId(Long saleId) {
+        return dsl.selectFrom(SALE_ITEMS)
+                .where(SALE_ITEMS.SALE_ID.eq(saleId))
+                .fetch()
+                .map(r -> {
+                    SaleItem item = new SaleItem(
+                            r.get(SALE_ITEMS.PRODUCT_ID),
+                            r.get(SALE_ITEMS.PRODUCT_NAME),
+                            r.get(SALE_ITEMS.QUANTITY),
+                            Money.of(r.get(
+                                            SALE_ITEMS.UNIT_PRICE),
+                                    "USD")
+                    );
+                    item.setTaxAmount(Money.of(
+                            r.get(SALE_ITEMS.TAX_AMOUNT),
+                            "USD"));
+                    item.setDiscountAmount(Money.of(
+                            r.get(SALE_ITEMS.DISCOUNT_AMOUNT),
+                            "USD"));
+                    return item;
+                });
+    }
 }

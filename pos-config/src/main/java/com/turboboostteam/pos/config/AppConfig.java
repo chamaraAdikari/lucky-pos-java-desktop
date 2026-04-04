@@ -103,4 +103,12 @@ public class AppConfig {
             CustomerDao customerDao) {
         return new LoyaltyService(customerDao);
     }
+
+    @Bean
+    public VoidRefundService voidRefundService(
+            SaleDao saleDao,
+            InventoryService inventoryService) {
+        return new VoidRefundService(saleDao,
+                inventoryService);
+    }
 }

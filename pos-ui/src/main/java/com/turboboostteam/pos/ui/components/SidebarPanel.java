@@ -41,6 +41,8 @@ public class SidebarPanel extends JPanel {
         Role role = SessionManager.getInstance().getCurrentUser().getRole();
         if (role == Role.ADMIN || role == Role.SUPERVISOR) {
             addNavButton("📊  Reports", "REPORTS");
+            addNavButton("↩️  Void/Refund", "VOIDREFUND");
+            addNavButton("📊  Reports",     "REPORTS");
         }
 
         // Settings — only ADMIN

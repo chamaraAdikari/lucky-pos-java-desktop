@@ -46,6 +46,7 @@ public class MainFrame extends JFrame {
         contentArea.add(new InventoryPanel(), "INVENTORY");
         contentArea.add(new CustomerPanel(),  "CUSTOMERS");
         contentArea.add(new ReportsPanel(),   "REPORTS");
+        contentArea.add(new VoidRefundPanel(), "VOIDREFUND");
 
         // Assemble
         root.add(header,      "span 2, growx, wrap");
@@ -60,6 +61,13 @@ public class MainFrame extends JFrame {
 
     private void navigateTo(String panelName) {
         cardLayout.show(contentArea, panelName);
+        // Refresh panel when navigated to
+        Component[] components = contentArea.getComponents();
+        for (Component c : components) {
+            if (c.isVisible() && c instanceof VoidRefundPanel) {
+                ((VoidRefundPanel) c).refresh();
+            }
+        }
     }
 
     private void handleLogout() {
